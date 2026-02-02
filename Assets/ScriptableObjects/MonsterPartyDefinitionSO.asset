@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886c24b8d454e1942b6ea4dca284d246, type: 3}
   m_Name: MonsterPartyDefinitionSO
   m_EditorClassIdentifier: Assembly-CSharp::PartyDefinitionSO
+  _isMonsters: 1
   _characters:
   - {fileID: 11400000, guid: c3d046f2d42339641a608a0ce97d9a50, type: 2}

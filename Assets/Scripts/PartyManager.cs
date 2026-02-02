@@ -7,14 +7,18 @@ public class PartyManager : MonoBehaviour
     public GameObject characterPrefab;
 
     [SerializeField]
-    private PartyDefinitionSO _partyDefinition;
-
-    [SerializeField]
     private Transform _spawnLocation;
+
+    private PartyDefinitionSO _partyDefinition;
 
     [Header("Party Members")]
     [SerializeField]
     private List<GameObject> _characters; // changed from List<Character>
+
+    public void SetPartyDefinition(PartyDefinitionSO partyDefinitionSO)
+    {
+        _partyDefinition = partyDefinitionSO;
+    }
 
     public void GeneratePartyCharacters()
     {
@@ -24,11 +28,7 @@ public class PartyManager : MonoBehaviour
             Character characterScript = characterObject.GetComponent<Character>();
             characterScript.InitCharacter(character);
             _characters.Add(characterObject);
+            if (_partyDefinition.IsMonsterParty) characterObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
         }
-    }
-
-    private void Awake()
-    {
-        GeneratePartyCharacters();
     }
 }
