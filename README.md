@@ -5,7 +5,11 @@ The book suggests all challenges are undertaken in/delivered via the Console. Ho
 
 The final game will be able to be played with 1 player (vs. CPU) or 2 players.
 
-## Current Challenge: Building Character
+## Current Challenge: The True Programmer
+###Objectives
++ Allow player to enter a custom name for their character
+
+##Building Character
 ### Objectives
 + Game loop that supports two parties (heroes vs monsters)
 + Each battle round every character will get to take one action, alternating between parties
@@ -15,3 +19,5 @@ The final game will be able to be played with 1 player (vs. CPU) or 2 players.
 + Support single action of 'do nothing'
 + The game will run automatically given there's no active actions to take
 + [Stretch] Arguably necessary - add a time limit to take action before default action is taken
+###State of the project at the end of this challenge:
+<img width="1236" height="589" alt="image" src="https://github.com/user-attachments/assets/1f9fa899-a160-4fad-b33a-47cd16d8f8bd" />
