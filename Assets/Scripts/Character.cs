@@ -15,13 +15,20 @@ public class Character : MonoBehaviour
      * Sub-classes can influence/own responses, not decisions
      */
     [SerializeField]
-    private CharacterDefinitionSO characterDefinition;
+    private CharacterDefinitionSO _characterDefinition;
     [SerializeField]
-    public TextMeshProUGUI nameplate;
-
+    private TextMeshProUGUI _nameplate;
+    [SerializeField]
+    private SpriteRenderer _characterVisuals;
 
     private void Awake()
     {
-        nameplate.text = characterDefinition.Name;
+        
+    }
+    public void InitCharacter(CharacterDefinitionSO charDef)
+    {
+        _characterDefinition = charDef;
+        _nameplate.text = _characterDefinition.Name;
+        _characterVisuals.sprite = _characterDefinition.SpriteIdle;
     }
 }

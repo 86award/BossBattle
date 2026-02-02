@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "CharacterDefintionSO", menuName = "Scriptable Objects/Character Definition", order = 1)]
+[CreateAssetMenu(fileName = "CharacterDefintionSO", menuName = "Scriptable Objects/Character Definition", order = 2)]
 public class CharacterDefinitionSO : ScriptableObject
 {
     public string Name { get { return _name; } }
+    public Sprite SpriteIdle {  get { return spriteIdle; } }
 
     [SerializeField]
     private string _name;
@@ -13,5 +14,5 @@ public class CharacterDefinitionSO : ScriptableObject
     private int _maxHealth;
 
     [SerializeField]
-    private Image portrain;
+    private Sprite spriteIdle;
 }
