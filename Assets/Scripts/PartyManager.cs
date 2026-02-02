@@ -11,7 +11,7 @@ public class PartyManager : MonoBehaviour
     public GameObject characterPrefab;
 
     [SerializeField]
-    private Transform _spawnLocation;
+    private List<Transform> _spawnLocation;
 
     private PartyDefinitionSO _partyDefinition;
 
@@ -31,18 +31,21 @@ public class PartyManager : MonoBehaviour
 
     public void GeneratePartyCharacters()
     {
+        int i = 0;
         foreach (CharacterDefinitionSO character in _partyDefinition.Characters)
         {
-            GameObject characterObject = Instantiate(characterPrefab, _spawnLocation);
+            if (i >= _partyDefinition.Characters.Count) break;
+            GameObject characterObject = Instantiate(characterPrefab, _spawnLocation[i]);
             Character characterScript = characterObject.GetComponent<Character>();
             characterScript.InitCharacter(character);
             _characters.Add(characterScript);
             /*
-             * What's interesting here is that I can add the characterScript to the _characters List 
-             * and it adds the game object which is what I was wanting to do. I didn't realise you 
-             * could do that.
-             */
+                * What's interesting here is that I can add the characterScript to the _characters List 
+                * and it adds the game object which is what I was wanting to do. I didn't realise you 
+                * could do that.
+                */
             if (_partyDefinition.IsMonsterParty) characterObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
+            i++;
         }
     }
 }

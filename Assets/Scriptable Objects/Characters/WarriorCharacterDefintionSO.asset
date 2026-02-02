@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e87335cacfe2e2a45bfcd5a68c70dad0, type: 3}
-  m_Name: HeroCharacterDefintionSO
+  m_Name: WarriorCharacterDefintionSO
   m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinitionSO
   _name: Hero
   _maxHealth: 100

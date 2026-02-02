@@ -28,8 +28,10 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         _heroPartyManager.SetPartyDefinition(_battleDefinition.HeroPartySO);
-        _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.SetPartyDefinition(_battleDefinition.MonsterPartySO);
+
+
+        _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.GeneratePartyCharacters();
 
         button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
@@ -72,7 +74,10 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log($"{_battleParticipants[0]} did nothing");
             isHeroTurn = false;
-            _turnText.text = $"It's {_battleParticipants[1]}'s turn.";
+            _turnText.text = $"It's {_battleParticipants[5]}'s turn."; // won't work with magic numbers and variable number of combatants
+            /*
+             * This might be a good place to look at using a queue or stack etc.
+             */
 
             // I think I want to call an event here that makes it monster turn
             button.gameObject.SetActive(false);
