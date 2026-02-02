@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 065ee3eb8e1389647b784ee5bc23cb68, type: 3}
   m_Name: BattleDefinitionSO
   m_EditorClassIdentifier: Assembly-CSharp::BattleDefinitionSO
-  _heroParty: {fileID: 0}
-  _monsterParty: {fileID: 0}
+  _heroParty: {fileID: 11400000, guid: a0ed0bfaa0d288a4f890e8d291a58316, type: 2}
+  _monsterParty: {fileID: 11400000, guid: d3773359222f82949984072a4b1b78ed, type: 2}

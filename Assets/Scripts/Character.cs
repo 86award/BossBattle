@@ -13,8 +13,11 @@ public class Character : MonoBehaviour
      * 
      * Character should control and calculate damage results
      * Sub-classes can influence/own responses, not decisions
+     * 
+     * Owns personal state and invariants
+     * Responds to damage and effects
      */
-    [SerializeField]
+
     private CharacterDefinitionSO _characterDefinition;
     [SerializeField]
     private TextMeshProUGUI _nameplate;
@@ -30,5 +33,10 @@ public class Character : MonoBehaviour
         _characterDefinition = charDef;
         _nameplate.text = _characterDefinition.Name;
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
+    }
+
+    public override string ToString()
+    {
+        return _characterDefinition.Name;
     }
 }

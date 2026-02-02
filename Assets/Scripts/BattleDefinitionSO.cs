@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BattleDefinitionSO", menuName = "Scriptable Objects/Battle Definition", order = 3)]
+[CreateAssetMenu(fileName = "BattleDefinitionSO", menuName = "Scriptable Objects/Battle Definition", order = 1)]
 public class BattleDefinitionSO: ScriptableObject
 {
     [SerializeField]

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PartyManager : MonoBehaviour
 {
+    /*
+     * Owns party composition and party-wide state
+     * Knows which characters are alive or ready
+    */
     public GameObject characterPrefab;
 
     [SerializeField]
@@ -13,11 +17,16 @@ public class PartyManager : MonoBehaviour
 
     [Header("Party Members")]
     [SerializeField]
-    private List<GameObject> _characters; // changed from List<Character>
+    private List<Character> _characters; // changed from List<Character>
 
     public void SetPartyDefinition(PartyDefinitionSO partyDefinitionSO)
     {
         _partyDefinition = partyDefinitionSO;
+    }
+
+    public List<Character> GetPartyCharacterList()
+    {
+        return _characters;
     }
 
     public void GeneratePartyCharacters()
@@ -27,7 +36,12 @@ public class PartyManager : MonoBehaviour
             GameObject characterObject = Instantiate(characterPrefab, _spawnLocation);
             Character characterScript = characterObject.GetComponent<Character>();
             characterScript.InitCharacter(character);
-            _characters.Add(characterObject);
+            _characters.Add(characterScript);
+            /*
+             * What's interesting here is that I can add the characterScript to the _characters List 
+             * and it adds the game object which is what I was wanting to do. I didn't realise you 
+             * could do that.
+             */
             if (_partyDefinition.IsMonsterParty) characterObject.GetComponentInChildren<SpriteRenderer>().flipX = true;
         }
     }

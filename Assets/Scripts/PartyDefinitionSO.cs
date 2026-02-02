@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-[CreateAssetMenu(fileName = "PartyDefinitionSO", menuName = "Scriptable Objects/Party Definition", order = 1)]
+[CreateAssetMenu(fileName = "PartyDefinitionSO", menuName = "Scriptable Objects/Party Definition", order = 2)]
 public class PartyDefinitionSO : ScriptableObject
 {
     [SerializeField]

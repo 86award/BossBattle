@@ -1,18 +1,28 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using TMPro;
 
-public class RoundManager : MonoBehaviour
+public class BattleManager : MonoBehaviour
 {
     // get a reference to each party taking part in the battle
     // the battle manager should know what parties are in the battle
+    // * Knows that parties exist, not how they work internally
     [SerializeField]
     private BattleDefinitionSO _battleDefinition;
 
+    // * Holds references to PartyManagers
     [SerializeField]
     private PartyManager _heroPartyManager;
 
     [SerializeField]
     private PartyManager _monsterPartyManager;
+
+    [SerializeField]
+    private TextMeshProUGUI _turnText;
+
+    [SerializeField]
+    private UI_Button_CharacterAction button;
 
     private void Awake()
     {
@@ -20,10 +30,59 @@ public class RoundManager : MonoBehaviour
         _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.SetPartyDefinition(_battleDefinition.MonsterPartySO);
         _monsterPartyManager.GeneratePartyCharacters();
+
+        button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
+    }
+
+    [SerializeField]
+    private List<Character> _battleParticipants;
+
+    private bool isHeroTurn;
+
+    private void Start()
+    {
+        /*
+         * need to look at how I can embrace DRY and avoid repetition of these foreach loops
+         */
+        // get all characters and store in character list
+        foreach (Character character in _heroPartyManager.GetPartyCharacterList())
+        {
+            _battleParticipants.Add(character);
+        }
+        foreach (Character character in _monsterPartyManager.GetPartyCharacterList())
+        {
+            _battleParticipants.Add(character);
+        }
+
+        isHeroTurn = true;
+        _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+    }
+
+    private void Update()
+    {
+        // Start with one character being able to play
+        // need to post/communicate to the player whos turn it is
+        
+    }
+
+    public void CompleteAction()
+    {
+        if (isHeroTurn)
+        {
+            Debug.Log($"{_battleParticipants[0]} did nothing");
+            isHeroTurn = false;
+            _turnText.text = $"It's {_battleParticipants[1]}'s turn.";
+        }
+        else
+        {
+            Debug.Log($"{_battleParticipants[1]} did nothing");
+            isHeroTurn = true;
+            _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        }
     }
 
     /*
-     * Holds references to PartyManagers
+     * Owns battle flow and resolution
      * Runs the battle state machine
      * Determines whose turn it is
      * Evaluates win/loss using party-level queries
