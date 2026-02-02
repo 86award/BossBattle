@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using TMPro;
+using System.Collections;
 
 public class BattleManager : MonoBehaviour
 {
@@ -72,13 +73,20 @@ public class BattleManager : MonoBehaviour
             Debug.Log($"{_battleParticipants[0]} did nothing");
             isHeroTurn = false;
             _turnText.text = $"It's {_battleParticipants[1]}'s turn.";
+
+            // I think I want to call an event here that makes it monster turn
+            button.gameObject.SetActive(false);
+            StartCoroutine(WaitForMonsterTurn());
         }
-        else
-        {
-            Debug.Log($"{_battleParticipants[1]} did nothing");
-            isHeroTurn = true;
-            _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
-        }
+    }
+
+    public IEnumerator WaitForMonsterTurn()
+    {
+        yield return new WaitForSeconds(4);
+        Debug.Log($"{_battleParticipants[1]} did nothing");
+        isHeroTurn = true;
+        _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        button.gameObject.SetActive(true);
     }
 
     /*

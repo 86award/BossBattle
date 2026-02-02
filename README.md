@@ -15,7 +15,7 @@ The final game will be able to be played with 1 player (vs. CPU) or 2 players.
 + Each battle round every character will get to take one action, alternating between parties
 + For this challenge, each party has one skeleton
 + Skeleton represented with nameplate
-+ Communicate whos turn it is to the player
++ Communicate whose turn it is to the player
 + Support single action of 'do nothing'
 + The game will run automatically given there's no active actions to take
 + [Stretch] Arguably necessary - add a time limit to take action before default action is taken
