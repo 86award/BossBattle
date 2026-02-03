@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using System;
 
 public class Character : MonoBehaviour
@@ -23,16 +22,20 @@ public class Character : MonoBehaviour
     public int InitiativeRoll { get { return _initiativeRoll; } }
     public int InitiativeBonus { get { return _initiativeBonus; } }
     public string Name { get { return _name; } }
+    public List<AbilityDefinitionSO> Abilities { get { return _abilities; } }
 
     private CharacterDefinitionSO _characterDefinition;
     private int _initiativeRoll;
     private int _initiativeBonus;
     private string _name;
+    private List<AbilityDefinitionSO> _abilities;
 
     [SerializeField]
     private SpriteRenderer _characterVisuals;
 
     public event Action UpdateNamePlate;
+    public event Action CharacterActivated;
+    public event Action PopulateAbilityUI;
 
     public void InitCharacter(CharacterDefinitionSO charDef)
     {
@@ -40,12 +43,14 @@ public class Character : MonoBehaviour
         _name = _characterDefinition.Name;
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
         _initiativeBonus = _characterDefinition.IntBonus;
+        _abilities = _characterDefinition.Abilities; // populate the list with abilities from the SO
         UpdateNamePlate.Invoke();
+        PopulateAbilityUI.Invoke();
     }
 
     public void ActivateCharacter()
     {
-        //foreach (Button button in _actionButtons) button.gameObject.SetActive(true);
+        CharacterActivated.Invoke();
     }
 
     public void RollInitiative(int randomRoll)

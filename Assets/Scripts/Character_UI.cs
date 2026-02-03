@@ -1,6 +1,7 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Character_UI : MonoBehaviour
 {
@@ -10,13 +11,41 @@ public class Character_UI : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _nameplate;
 
-    //[SerializeField]
-    //private List<Button> _actionButtons;
+    [SerializeField]
+    private GameObject _buttonPrefab;
+
+    [SerializeField]
+    private GameObject _actionToolbarFrame; // parent of any action buttons
+
+    [SerializeField]
+    private List<Button> _actionToolbarButtons;
     // what I really want to do here is only spawn as many buttons as the character has abilities
 
     private void Awake()
     {
         _character.UpdateNamePlate += UpdateNamePlate;
+        _character.CharacterActivated += ShowActionBarButtons;
+        _character.PopulateAbilityUI += PopulateAbilities;
+
+        // as part of initialising I should create a list with # of elements == to number of abilities
+        //foreach (AbilityDefinitionSO ability in _character.Abilities) //_actionToolbar.AddComponent<Button>();
+        //{
+        //    Debug.Log(ability);
+        //}
+        //foreach (Button button in _actionButtons) button.gameObject.SetActive(false);
+    }
+
+    private void PopulateAbilities()
+    {
+        foreach (AbilityDefinitionSO ability in _character.Abilities)
+        {
+            // instantiate a button prefab
+            GameObject newButton = Instantiate(_buttonPrefab, _actionToolbarFrame.transform);
+            Button actionButton = newButton.GetComponent<Button>();
+            actionButton.GetComponentInChildren<TextMeshProUGUI>().text = ability.AbilityName; // needed to reach into the child and get TMP component
+            _actionToolbarButtons.Add(actionButton);
+            foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
+        }
     }
 
     private void UpdateNamePlate()
@@ -24,5 +53,8 @@ public class Character_UI : MonoBehaviour
         _nameplate.text = _character.Name;
     }
 
-    //foreach (Button button in _actionButtons) button.gameObject.SetActive(false); // must remember to get the gameObject, not just button component
+    private void ShowActionBarButtons()
+    {
+        foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(true); // must remember to get the gameObject, not just button component
+    }
 }

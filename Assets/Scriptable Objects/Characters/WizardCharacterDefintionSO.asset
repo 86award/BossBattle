@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinitionSO
   _name: Wizard
   _maxHealth: 100
-  spriteIdle: {fileID: 4723107735738678597, guid: bea1c74506fe4cd42aa723c765144b93, type: 3}
+  _spriteIdle: {fileID: 4723107735738678597, guid: bea1c74506fe4cd42aa723c765144b93, type: 3}
+  _initiativeRollBonus: 5

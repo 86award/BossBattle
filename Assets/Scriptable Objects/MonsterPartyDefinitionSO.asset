@@ -15,5 +15,3 @@ MonoBehaviour:
   _isMonsters: 1
   _characters:
   - {fileID: 11400000, guid: c3d046f2d42339641a608a0ce97d9a50, type: 2}
-  - {fileID: 11400000, guid: a2dc670f5c986a741a413a1b5e7498e4, type: 2}
-  - {fileID: 11400000, guid: 80a888c50cf08414e98f1d4e2e1bec0e, type: 2}

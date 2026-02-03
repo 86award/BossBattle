@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 
+public enum BattleRoundState
+{
+    Initialising,
+    Waiting,
+    Resolving,
+}
+
 public class BattleManager : MonoBehaviour
 {
     [SerializeField]
@@ -20,7 +27,12 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private List<Character> _battleParticipants;
 
-    private bool _isHeroTurn;
+    [SerializeField]
+    private Queue<Character> _battleOrder;
+
+    [SerializeField]
+    private BattleRoundState _state;
+
     private System.Random _random = new System.Random();
 
     private void Awake()
@@ -30,53 +42,60 @@ public class BattleManager : MonoBehaviour
 
         _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.GeneratePartyCharacters();
-
-        //_battleUI.button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
     }
 
     private void Start()
     {
+        // I'm going to need to remember to rebuild the party lists after every turn just in case a character dies
         foreach (Character character in _heroPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
         foreach (Character character in _monsterPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
+                
+        BattleRound();
+    }
 
+    public void BattleRound()
+    {
+        EnterInitialisingState();
+        EnterWaitingState();
+    }
+
+    private void EnterInitialisingState()
+    {
+        _state = BattleRoundState.Initialising;
+        // I'm going to need to remember to rebuild the party lists after every turn just in case a character dies
+        _battleOrder = RollInitiative();
+    }
+
+    private Queue<Character> RollInitiative()
+    {
         foreach (Character character in _battleParticipants) character.RollInitiative(_random.Next(1, 21));
         Queue<Character> battleOrder = new Queue<Character>(from character in _battleParticipants
                                                             orderby character.InitiativeRoll descending
                                                             select character);
-
-        BattleRound(battleOrder);
+        return battleOrder;
     }
 
-    public void BattleRound(Queue<Character> battleOrder)
-    {
-        while (battleOrder.Count > 0)
-        {
-            Character activeCharacter = battleOrder.Dequeue();
-            Debug.Log(activeCharacter);
-            _battleUI._turnText.text = $"It's {activeCharacter}'s turn.";
-            CharacterTurn(activeCharacter);
-        }
-    }
-
-    public void CharacterTurn(Character character)
+    public void EnterWaitingState()
     {
         /*
          * The character is activated
-         * // should I drive the game flow from character - no the battle manager is the coordinator
-         * // the character should be notified that it's able to do something and deliver input back to the BattleManager
+         * // should I drive the game flow from character - no the battle manager is the coordinator, it decides when somthing should happen
+         * // the character should be notified that it's able to do something and deliver input back to the BattleManager, the character decides how they act
          * The UI should reflect the character is activated - text and buttons
          * // determine available actions for active character
          * // activate buttons for actions
          * The game should wait for the character to take an action be pressing a button
-         * // enact action
+         * // enact action and supply actions to affected objects, the battle manager directly modify character fields/set health values
          * The game will only progress once an action has been taken
          * Process action and provide feedback to player
          * The character should be deactivated and UI updated to reflect that
          * Check if battle has been won/lost
          * Play should pass to next character to activate
          */
-        character.ActivateCharacter();
-        StartCoroutine(WaitForMonsterTurn(character));
+        _state = BattleRoundState.Waiting;
+        Character nextCharacter = _battleOrder.Dequeue();
+        _battleUI._turnText.text = $"It's {nextCharacter}'s turn.";
+        nextCharacter.ActivateCharacter();
     }
 
     //public void CompleteAction()

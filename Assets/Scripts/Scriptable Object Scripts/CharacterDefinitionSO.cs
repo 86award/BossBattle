@@ -1,12 +1,14 @@
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
+
 
 [CreateAssetMenu(fileName = "CharacterDefintionSO", menuName = "Scriptable Objects/Character Definition", order = 3)]
 public class CharacterDefinitionSO : ScriptableObject
 {
     public string Name { get { return _name; } }
-    public Sprite SpriteIdle {  get { return _spriteIdle; } }
-    public int IntBonus {  get { return _initiativeRollBonus; } }
+    public Sprite SpriteIdle { get { return _spriteIdle; } }
+    public int IntBonus { get { return _initiativeRollBonus; } }
+    public List<AbilityDefinitionSO> Abilities { get { return _abilities; } }
 
     [SerializeField]
     private string _name;
@@ -19,4 +21,7 @@ public class CharacterDefinitionSO : ScriptableObject
 
     [SerializeField]
     private int _initiativeRollBonus;
+
+    [SerializeField]
+    private List<AbilityDefinitionSO> _abilities;
 }

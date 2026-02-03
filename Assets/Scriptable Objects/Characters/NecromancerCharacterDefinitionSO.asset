@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinitionSO
   _name: Necromancer
   _maxHealth: 100
-  spriteIdle: {fileID: 3234629978573100161, guid: 791ba35cf0219cb43a3cfc3ee1b0ec90, type: 3}
+  _spriteIdle: {fileID: 7132915409514813599, guid: 791ba35cf0219cb43a3cfc3ee1b0ec90, type: 3}
+  _initiativeRollBonus: 4
