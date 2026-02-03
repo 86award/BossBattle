@@ -18,4 +18,5 @@ MonoBehaviour:
   _initiativeRollBonus: 5
   _abilities:
   - {fileID: 11400000, guid: 55d6dc99aded6304ea0b3263956e0e53, type: 2}
+  - {fileID: 11400000, guid: 66a944d689abf56438c033ac701fbd60, type: 2}
   - {fileID: 11400000, guid: 06eabe7685f99bb4da10f29015a29034, type: 2}

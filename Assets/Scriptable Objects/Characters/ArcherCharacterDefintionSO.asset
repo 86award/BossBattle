@@ -16,3 +16,6 @@ MonoBehaviour:
   _maxHealth: 100
   _spriteIdle: {fileID: 4723107735738678597, guid: 6da666df039116c49b95319962d1c931, type: 3}
   _initiativeRollBonus: 5
+  _abilities:
+  - {fileID: 11400000, guid: 55d6dc99aded6304ea0b3263956e0e53, type: 2}
+  - {fileID: 11400000, guid: 06eabe7685f99bb4da10f29015a29034, type: 2}

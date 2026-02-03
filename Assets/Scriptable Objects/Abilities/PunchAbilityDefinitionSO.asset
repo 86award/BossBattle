@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3bd53cddd820c47b7e640aeffe1113, type: 3}
   m_Name: PunchAbilityDefinitionSO
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinitionSO
-  _abilityName: Bone Crunch
+  _abilityName: Punch
   _abilityImage: {fileID: 7497223083361830916, guid: 8322aa27ee91c274e9338587bff5f3dc, type: 3}

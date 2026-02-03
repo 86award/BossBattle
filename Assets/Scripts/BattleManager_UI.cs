@@ -5,4 +5,7 @@ public class BattleManager_UI : MonoBehaviour
 {
     [SerializeField]
     public TextMeshProUGUI _turnText;
+
+    [SerializeField]
+    public TextMeshProUGUI _roundText;
 }

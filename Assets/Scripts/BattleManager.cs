@@ -31,6 +31,7 @@ public class BattleManager : MonoBehaviour
     private Queue<Character> _battleOrder;
 
     private System.Random _random = new System.Random();
+    private int _battleRound;
 
     private void Awake()
     {
@@ -51,11 +52,13 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        _battleRound = 1;
         InitialiseBattleRound();
     }
 
     private void InitialiseBattleRound()
     {
+        _battleUI._roundText.text = $"Battle Round {_battleRound}";
         BuildCharacterTurnOrder();
         TurnSelection();
         //WaitingForAction();
@@ -119,7 +122,7 @@ public class BattleManager : MonoBehaviour
         if (_battleOrder.Count > 0) TurnSelection();
         else
         {
-            Debug.Log("Battle Round complete. Starting new round.");
+            _battleRound++;
             InitialiseBattleRound();
         }
     }
