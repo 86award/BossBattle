@@ -18,21 +18,30 @@ public class Character : MonoBehaviour
      * Responds to damage and effects
      */
 
+    public int InitiativeRoll { get { return _initiativeRoll; } }
+    public int InitiativeBonus {  get { return _initiativeBonus; } }
+
     private CharacterDefinitionSO _characterDefinition;
+    private int _initiativeRoll;
+    private int _initiativeBonus;
+
     [SerializeField]
     private TextMeshProUGUI _nameplate;
+
     [SerializeField]
     private SpriteRenderer _characterVisuals;
 
-    private void Awake()
-    {
-        
-    }
     public void InitCharacter(CharacterDefinitionSO charDef)
     {
         _characterDefinition = charDef;
         _nameplate.text = _characterDefinition.Name;
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
+        _initiativeBonus = _characterDefinition.IntBonus;
+    }
+
+    public void RollInitiative(int randomRoll)
+    {
+        _initiativeRoll = randomRoll + _initiativeBonus;
     }
 
     public override string ToString()

@@ -1,18 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
-using TMPro;
+using System.Linq;
 using System.Collections;
 
 public class BattleManager : MonoBehaviour
 {
-    // get a reference to each party taking part in the battle
-    // the battle manager should know what parties are in the battle
-    // * Knows that parties exist, not how they work internally
     [SerializeField]
     private BattleDefinitionSO _battleDefinition;
 
-    // * Holds references to PartyManagers
     [SerializeField]
     private PartyManager _heroPartyManager;
 
@@ -20,34 +15,27 @@ public class BattleManager : MonoBehaviour
     private PartyManager _monsterPartyManager;
 
     [SerializeField]
-    private TextMeshProUGUI _turnText;
+    private BattleManager_UI _battleUI;
 
     [SerializeField]
-    private UI_Button_CharacterAction button;
+    private List<Character> _battleParticipants;
+    
+    private bool _isHeroTurn;
+    private System.Random _random = new System.Random();
 
     private void Awake()
     {
         _heroPartyManager.SetPartyDefinition(_battleDefinition.HeroPartySO);
         _monsterPartyManager.SetPartyDefinition(_battleDefinition.MonsterPartySO);
 
-
         _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.GeneratePartyCharacters();
 
-        button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
+        _battleUI.button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
     }
-
-    [SerializeField]
-    private List<Character> _battleParticipants;
-
-    private bool isHeroTurn;
 
     private void Start()
     {
-        /*
-         * need to look at how I can embrace DRY and avoid repetition of these foreach loops
-         */
-        // get all characters and store in character list
         foreach (Character character in _heroPartyManager.GetPartyCharacterList())
         {
             _battleParticipants.Add(character);
@@ -57,8 +45,22 @@ public class BattleManager : MonoBehaviour
             _battleParticipants.Add(character);
         }
 
-        isHeroTurn = true;
-        _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        foreach(Character character in _battleParticipants)
+        {
+            character.RollInitiative(_random.Next(1, 21));
+            Debug.Log($"{character} rolled a {character.InitiativeRoll} inc. (+{character.InitiativeBonus} bonus).");
+        }
+
+        Queue<Character> battleOrder = new Queue<Character>(from character in _battleParticipants
+                                                            orderby character.InitiativeRoll descending
+                                                            select character);
+
+        foreach (Character character in battleOrder) Debug.Log(character);
+
+        Debug.Log($"{battleOrder.Dequeue()}'s turn.");
+
+        _isHeroTurn = true;
+        _battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
     }
 
     private void Update()
@@ -70,17 +72,17 @@ public class BattleManager : MonoBehaviour
 
     public void CompleteAction()
     {
-        if (isHeroTurn)
+        if (_isHeroTurn)
         {
             Debug.Log($"{_battleParticipants[0]} did nothing");
-            isHeroTurn = false;
-            _turnText.text = $"It's {_battleParticipants[5]}'s turn."; // won't work with magic numbers and variable number of combatants
+            _isHeroTurn = false;
+            _battleUI._turnText.text = $"It's {_battleParticipants[5]}'s turn."; // won't work with magic numbers and variable number of combatants
             /*
              * This might be a good place to look at using a queue or stack etc.
              */
 
             // I think I want to call an event here that makes it monster turn
-            button.gameObject.SetActive(false);
+            _battleUI.button.gameObject.SetActive(false);
             StartCoroutine(WaitForMonsterTurn());
         }
     }
@@ -89,9 +91,9 @@ public class BattleManager : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         Debug.Log($"{_battleParticipants[1]} did nothing");
-        isHeroTurn = true;
-        _turnText.text = $"It's {_battleParticipants[0]}'s turn.";
-        button.gameObject.SetActive(true);
+        _isHeroTurn = true;
+        _battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        _battleUI.button.gameObject.SetActive(true);
     }
 
     /*

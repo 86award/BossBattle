@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class CharacterDefinitionSO : ScriptableObject
 {
     public string Name { get { return _name; } }
-    public Sprite SpriteIdle {  get { return spriteIdle; } }
+    public Sprite SpriteIdle {  get { return _spriteIdle; } }
+    public int IntBonus {  get { return _initiativeRollBonus; } }
 
     [SerializeField]
     private string _name;
@@ -14,5 +15,8 @@ public class CharacterDefinitionSO : ScriptableObject
     private int _maxHealth;
 
     [SerializeField]
-    private Sprite spriteIdle;
+    private Sprite _spriteIdle;
+
+    [SerializeField]
+    private int _initiativeRollBonus;
 }
