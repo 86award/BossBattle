@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a3bd53cddd820c47b7e640aeffe1113, type: 3}
-  m_Name: DoNothingAbilityDefinitionSO
+  m_Name: PunchAbilityDefinitionSO
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinitionSO
-  _abilityName: Do Nothing
-  _abilityImage: {fileID: 5512843731893420081, guid: 94b7db562cda2fc4ea3300165b312602, type: 3}
+  _abilityName: Bone Crunch
+  _abilityImage: {fileID: 7497223083361830916, guid: 8322aa27ee91c274e9338587bff5f3dc, type: 3}

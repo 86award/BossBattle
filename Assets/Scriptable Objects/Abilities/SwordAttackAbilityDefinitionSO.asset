@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a3bd53cddd820c47b7e640aeffe1113, type: 3}
-  m_Name: DoNothingAbilityDefinitionSO
+  m_Name: SwordAttackAbilityDefinitionSO
   m_EditorClassIdentifier: Assembly-CSharp::AbilityDefinitionSO
-  _abilityName: Do Nothing
-  _abilityImage: {fileID: 5512843731893420081, guid: 94b7db562cda2fc4ea3300165b312602, type: 3}
+  _abilityName: Sword Attack
+  _abilityImage: {fileID: 8614061291418355662, guid: cd5cda84901f66442b674f3f9ce981c3, type: 3}
