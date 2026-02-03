@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7740285616014620381}
   - component: {fileID: 7553185100386541739}
   - component: {fileID: 4336518490461588177}
+  - component: {fileID: 9062132473482104271}
   m_Layer: 5
   m_Name: AbilityButton
   m_TagString: Untagged
@@ -121,6 +122,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &9062132473482104271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354952925911693338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07a78f8f37ca3e408ac352153528693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterActionResponse
 --- !u!1 &2568759143099607411
 GameObject:
   m_ObjectHideFlags: 0

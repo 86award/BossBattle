@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 
-public enum BattleRoundState
-{
-    Initialising,
-    Waiting,
-    Resolving,
-}
-
+/*
+ * Owns battle flow and resolution
+ * Runs the battle state machine
+ * Determines whose turn it is
+ * Evaluates win/loss using party-level queries
+ * Coordinates turn transitions
+*/
 public class BattleManager : MonoBehaviour
 {
     [SerializeField]
@@ -25,58 +25,77 @@ public class BattleManager : MonoBehaviour
     private BattleManager_UI _battleUI;
 
     [SerializeField]
-    private List<Character> _battleParticipants;
+    private List<Character> _battleRoster;
 
     [SerializeField]
     private Queue<Character> _battleOrder;
-
-    [SerializeField]
-    private BattleRoundState _state;
 
     private System.Random _random = new System.Random();
 
     private void Awake()
     {
+        /*
+         * This effectively sets up a battle for a specific level
+         * - use battle definition SO to assign groups to party managers
+         * - instantiate character instance for each character and add to single battle roster
+        */
         _heroPartyManager.SetPartyDefinition(_battleDefinition.HeroPartySO);
         _monsterPartyManager.SetPartyDefinition(_battleDefinition.MonsterPartySO);
 
         _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.GeneratePartyCharacters();
+
+        foreach (Character character in _heroPartyManager.GetPartyCharacterList()) _battleRoster.Add(character);
+        foreach (Character character in _monsterPartyManager.GetPartyCharacterList()) _battleRoster.Add(character);
     }
 
     private void Start()
     {
-        // I'm going to need to remember to rebuild the party lists after every turn just in case a character dies
-        foreach (Character character in _heroPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
-        foreach (Character character in _monsterPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
-                
-        BattleRound();
+        InitialiseBattleRound();
     }
 
-    public void BattleRound()
+    private void InitialiseBattleRound()
     {
-        EnterInitialisingState();
-        EnterWaitingState();
+        BuildCharacterTurnOrder();
+        TurnSelection();
+        //WaitingForAction();
+        //ActionResolution();
+        //PostActionChecks();
     }
 
-    private void EnterInitialisingState()
+    private void BuildCharacterTurnOrder()
     {
-        _state = BattleRoundState.Initialising;
         // I'm going to need to remember to rebuild the party lists after every turn just in case a character dies
+        // in fact this should be taken care of because when health gets to zero I'll kill the character and remove them from partySO
         _battleOrder = RollInitiative();
     }
-
     private Queue<Character> RollInitiative()
     {
-        foreach (Character character in _battleParticipants) character.RollInitiative(_random.Next(1, 21));
-        Queue<Character> battleOrder = new Queue<Character>(from character in _battleParticipants
+        foreach (Character character in _battleRoster) character.RollInitiative(_random.Next(1, 21));
+        Queue<Character> battleOrder = new Queue<Character>(from character in _battleRoster
                                                             orderby character.InitiativeRoll descending
                                                             select character);
         return battleOrder;
     }
 
-    public void EnterWaitingState()
+    private Character _currentCharacter;
+
+    private void TurnSelection()
     {
+        // Unsubscribe from previous character to avoid duplicate subscribing
+        if (_currentCharacter != null)
+        {
+            _currentCharacter.ActionSelected -= WaitingForAction;
+        }
+        Character nextCharacter = _battleOrder.Dequeue();
+        nextCharacter.ActionSelected += WaitingForAction;
+        _battleUI._turnText.text = $"It's {nextCharacter}'s turn.";
+        nextCharacter.ActivateCharacter(); // event will be fired for each character
+    }
+
+    private void WaitingForAction(AbilityDefinitionSO ability)
+    {
+        Debug.Log($"Action selected: {ability.AbilityName}");
         /*
          * The character is activated
          * // should I drive the game flow from character - no the battle manager is the coordinator, it decides when somthing should happen
@@ -89,43 +108,18 @@ public class BattleManager : MonoBehaviour
          * The game will only progress once an action has been taken
          * Process action and provide feedback to player
          * The character should be deactivated and UI updated to reflect that
-         * Check if battle has been won/lost
          * Play should pass to next character to activate
          */
-        _state = BattleRoundState.Waiting;
-        Character nextCharacter = _battleOrder.Dequeue();
-        _battleUI._turnText.text = $"It's {nextCharacter}'s turn.";
-        nextCharacter.ActivateCharacter();
+        PostActionChecks();
     }
-
-    //public void CompleteAction()
-    //{
-    //    if (_isHeroTurn)
-    //    {
-    //        Debug.Log($"{_battleParticipants[0]} did nothing");
-    //        _isHeroTurn = false;
-
-
-    //        // I think I want to call an event here that makes it monster turn
-    //        _battleUI.button.gameObject.SetActive(false);
-    //        StartCoroutine(WaitForMonsterTurn());
-    //    }
-    //}
-
-    public IEnumerator WaitForMonsterTurn(Character character)
+    private void PostActionChecks()
     {
-        yield return new WaitForSeconds(4);
-        Debug.Log($"{character} did nothing");
-        //_isHeroTurn = true;
-        //_battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
-        //_battleUI.button.gameObject.SetActive(true);
+        // win/lose and whether there are unactivated characters remaining
+        if (_battleOrder.Count > 0) TurnSelection();
+        else
+        {
+            Debug.Log("Battle Round complete. Starting new round.");
+            InitialiseBattleRound();
+        }
     }
-
-    /*
-     * Owns battle flow and resolution
-     * Runs the battle state machine
-     * Determines whose turn it is
-     * Evaluates win/loss using party-level queries
-     * Coordinates turn transitions
-    */
 }

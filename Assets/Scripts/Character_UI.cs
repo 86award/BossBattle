@@ -27,6 +27,11 @@ public class Character_UI : MonoBehaviour
         _character.CharacterActivated += ShowActionBarButtons;
         _character.PopulateAbilityUI += PopulateAbilities;
 
+        //foreach (Button button in _actionToolbarButtons)
+        //{
+        //    button.GetComponent<CharacterActionResponse>().AttackButtonClicked += ActionButtonClicked;
+        //}
+
         // as part of initialising I should create a list with # of elements == to number of abilities
         //foreach (AbilityDefinitionSO ability in _character.Abilities) //_actionToolbar.AddComponent<Button>();
         //{
@@ -44,9 +49,13 @@ public class Character_UI : MonoBehaviour
             Button actionButton = newButton.GetComponent<Button>();
             actionButton.GetComponentInChildren<TextMeshProUGUI>().text = ability.AbilityName; // needed to reach into the child and get TMP component
             actionButton.GetComponent<Image>().sprite = ability.AbilityImage;
+            CharacterActionResponse actionResponse = actionButton.GetComponent<CharacterActionResponse>();
+            actionResponse.InitializeAbility(ability);
             _actionToolbarButtons.Add(actionButton);
-            foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
+            actionButton.GetComponent<CharacterActionResponse>().ActionButtonClicked += ActionButtonClicked;
+            actionButton.GetComponent<CharacterActionResponse>().ActionButtonClicked += _character.ActionSelectedFromUI;
         }
+        foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
     }
 
     private void UpdateNamePlate()
@@ -57,5 +66,10 @@ public class Character_UI : MonoBehaviour
     private void ShowActionBarButtons()
     {
         foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(true); // must remember to get the gameObject, not just button component
+    }
+
+    private void ActionButtonClicked(AbilityDefinitionSO _)
+    {
+        foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
     }
 }

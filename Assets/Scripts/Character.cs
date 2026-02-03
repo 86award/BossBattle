@@ -58,6 +58,13 @@ public class Character : MonoBehaviour
         _initiativeRoll = randomRoll + _initiativeBonus;
     }
 
+    public event Action<AbilityDefinitionSO> ActionSelected;
+
+    public void ActionSelectedFromUI(AbilityDefinitionSO abilityDefinitionSO)
+    {
+        ActionSelected?.Invoke(abilityDefinitionSO);
+    }
+
     public override string ToString()
     {
         return _characterDefinition.Name;
