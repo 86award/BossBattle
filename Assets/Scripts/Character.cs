@@ -1,5 +1,7 @@
 using UnityEngine;
-using TMPro;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using System;
 
 public class Character : MonoBehaviour
 {
@@ -19,24 +21,31 @@ public class Character : MonoBehaviour
      */
 
     public int InitiativeRoll { get { return _initiativeRoll; } }
-    public int InitiativeBonus {  get { return _initiativeBonus; } }
+    public int InitiativeBonus { get { return _initiativeBonus; } }
+    public string Name { get { return _name; } }
 
     private CharacterDefinitionSO _characterDefinition;
     private int _initiativeRoll;
     private int _initiativeBonus;
-
-    [SerializeField]
-    private TextMeshProUGUI _nameplate;
+    private string _name;
 
     [SerializeField]
     private SpriteRenderer _characterVisuals;
 
+    public event Action UpdateNamePlate;
+
     public void InitCharacter(CharacterDefinitionSO charDef)
     {
         _characterDefinition = charDef;
-        _nameplate.text = _characterDefinition.Name;
+        _name = _characterDefinition.Name;
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
         _initiativeBonus = _characterDefinition.IntBonus;
+        UpdateNamePlate.Invoke();
+    }
+
+    public void ActivateCharacter()
+    {
+        //foreach (Button button in _actionButtons) button.gameObject.SetActive(true);
     }
 
     public void RollInitiative(int randomRoll)

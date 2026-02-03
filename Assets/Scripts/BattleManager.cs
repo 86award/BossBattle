@@ -19,7 +19,7 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField]
     private List<Character> _battleParticipants;
-    
+
     private bool _isHeroTurn;
     private System.Random _random = new System.Random();
 
@@ -31,69 +31,75 @@ public class BattleManager : MonoBehaviour
         _heroPartyManager.GeneratePartyCharacters();
         _monsterPartyManager.GeneratePartyCharacters();
 
-        _battleUI.button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
+        //_battleUI.button.DoNothing += CompleteAction; // I don't like that I need a reference to the button in the inspector to be able to subscribe
     }
 
     private void Start()
     {
-        foreach (Character character in _heroPartyManager.GetPartyCharacterList())
-        {
-            _battleParticipants.Add(character);
-        }
-        foreach (Character character in _monsterPartyManager.GetPartyCharacterList())
-        {
-            _battleParticipants.Add(character);
-        }
+        foreach (Character character in _heroPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
+        foreach (Character character in _monsterPartyManager.GetPartyCharacterList()) _battleParticipants.Add(character);
 
-        foreach(Character character in _battleParticipants)
-        {
-            character.RollInitiative(_random.Next(1, 21));
-            Debug.Log($"{character} rolled a {character.InitiativeRoll} inc. (+{character.InitiativeBonus} bonus).");
-        }
-
+        foreach (Character character in _battleParticipants) character.RollInitiative(_random.Next(1, 21));
         Queue<Character> battleOrder = new Queue<Character>(from character in _battleParticipants
                                                             orderby character.InitiativeRoll descending
                                                             select character);
 
-        foreach (Character character in battleOrder) Debug.Log(character);
-
-        Debug.Log($"{battleOrder.Dequeue()}'s turn.");
-
-        _isHeroTurn = true;
-        _battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        BattleRound(battleOrder);
     }
 
-    private void Update()
+    public void BattleRound(Queue<Character> battleOrder)
     {
-        // Start with one character being able to play
-        // need to post/communicate to the player whos turn it is
-        
-    }
-
-    public void CompleteAction()
-    {
-        if (_isHeroTurn)
+        while (battleOrder.Count > 0)
         {
-            Debug.Log($"{_battleParticipants[0]} did nothing");
-            _isHeroTurn = false;
-            _battleUI._turnText.text = $"It's {_battleParticipants[5]}'s turn."; // won't work with magic numbers and variable number of combatants
-            /*
-             * This might be a good place to look at using a queue or stack etc.
-             */
-
-            // I think I want to call an event here that makes it monster turn
-            _battleUI.button.gameObject.SetActive(false);
-            StartCoroutine(WaitForMonsterTurn());
+            Character activeCharacter = battleOrder.Dequeue();
+            Debug.Log(activeCharacter);
+            _battleUI._turnText.text = $"It's {activeCharacter}'s turn.";
+            CharacterTurn(activeCharacter);
         }
     }
 
-    public IEnumerator WaitForMonsterTurn()
+    public void CharacterTurn(Character character)
+    {
+        /*
+         * The character is activated
+         * // should I drive the game flow from character - no the battle manager is the coordinator
+         * // the character should be notified that it's able to do something and deliver input back to the BattleManager
+         * The UI should reflect the character is activated - text and buttons
+         * // determine available actions for active character
+         * // activate buttons for actions
+         * The game should wait for the character to take an action be pressing a button
+         * // enact action
+         * The game will only progress once an action has been taken
+         * Process action and provide feedback to player
+         * The character should be deactivated and UI updated to reflect that
+         * Check if battle has been won/lost
+         * Play should pass to next character to activate
+         */
+        character.ActivateCharacter();
+        StartCoroutine(WaitForMonsterTurn(character));
+    }
+
+    //public void CompleteAction()
+    //{
+    //    if (_isHeroTurn)
+    //    {
+    //        Debug.Log($"{_battleParticipants[0]} did nothing");
+    //        _isHeroTurn = false;
+
+
+    //        // I think I want to call an event here that makes it monster turn
+    //        _battleUI.button.gameObject.SetActive(false);
+    //        StartCoroutine(WaitForMonsterTurn());
+    //    }
+    //}
+
+    public IEnumerator WaitForMonsterTurn(Character character)
     {
         yield return new WaitForSeconds(4);
-        Debug.Log($"{_battleParticipants[1]} did nothing");
-        _isHeroTurn = true;
-        _battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
-        _battleUI.button.gameObject.SetActive(true);
+        Debug.Log($"{character} did nothing");
+        //_isHeroTurn = true;
+        //_battleUI._turnText.text = $"It's {_battleParticipants[0]}'s turn.";
+        //_battleUI.button.gameObject.SetActive(true);
     }
 
     /*
@@ -103,14 +109,4 @@ public class BattleManager : MonoBehaviour
      * Evaluates win/loss using party-level queries
      * Coordinates turn transitions
     */
-
-    // determine which character will go first
-    // need to decide if it's alternating activations or initiative based - former is easier for now
-
-    // loop the below
-    // prompt active character for action
-    // process action
-    // provide feedback based on action
-    // check if battle has satisfied win/lose criteria
-    // pass play to next character
 }

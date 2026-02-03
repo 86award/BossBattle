@@ -9,7 +9,11 @@ The final game will be able to be played with 1 player (vs. CPU) or 2 players.
 ### Objectives
 + Allow player to enter a custom name for their character
 
-## Building Character
+## Challenge #1: Building Character
+### Learnings
++ Structuring a Unity project is very different from a pure C# Console project. Whereas a Console project may rely on extensive inheritance, Unity doesn't lend itself to that way of working. Instead I've found myself building classes that then data driven by Scriptable Objects (SO).
++ Good learning about the structure of the project. The SOs are 'design-time entities' that hold the data and pass this to run-time classes doing the work e.g. BattleManager class. There is a chain of classes at work from GameManager -> BattleManager -> PartyManager -> Character.
++ I'm trying to keep everything loosely coupled i.e., non-owning classes don't need to know anything about how other classes work, just that they can work with the data they're supplied.
 ### Objectives
 + Game loop that supports two parties (heroes vs monsters)
 + Each battle round every character will get to take one action, alternating between parties
