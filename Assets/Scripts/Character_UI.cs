@@ -49,11 +49,11 @@ public class Character_UI : MonoBehaviour
             Button actionButton = newButton.GetComponent<Button>();
             actionButton.GetComponentInChildren<TextMeshProUGUI>().text = ability.AbilityName; // needed to reach into the child and get TMP component
             actionButton.GetComponent<Image>().sprite = ability.AbilityImage;
+            _actionToolbarButtons.Add(actionButton);
             CharacterActionResponse actionResponse = actionButton.GetComponent<CharacterActionResponse>();
             actionResponse.InitializeAbility(ability);
-            _actionToolbarButtons.Add(actionButton);
-            actionButton.GetComponent<CharacterActionResponse>().ActionButtonClicked += ActionButtonClicked;
-            actionButton.GetComponent<CharacterActionResponse>().ActionButtonClicked += _character.ActionSelectedFromUI;
+            actionResponse.ActionButtonClicked += ActionButtonClicked;
+            actionResponse.ActionButtonClicked += _character.ActionSelectedFromUI;
         }
         foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
     }

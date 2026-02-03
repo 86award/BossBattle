@@ -88,6 +88,7 @@ public class BattleManager : MonoBehaviour
             _currentCharacter.ActionSelected -= WaitingForAction;
         }
         Character nextCharacter = _battleOrder.Dequeue();
+        _currentCharacter = nextCharacter;
         nextCharacter.ActionSelected += WaitingForAction;
         _battleUI._turnText.text = $"It's {nextCharacter}'s turn.";
         nextCharacter.ActivateCharacter(); // event will be fired for each character
