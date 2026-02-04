@@ -19,16 +19,19 @@ public class Character : MonoBehaviour
      * Responds to damage and effects
      */
 
+    public CharacterDefinitionSO CharacterDefinitionSO { get { return _characterDefinition; } }
     public int InitiativeRoll { get { return _initiativeRoll; } }
     public int InitiativeBonus { get { return _initiativeBonus; } }
     public string Name { get { return _name; } }
     public List<AbilityDefinitionSO> Abilities { get { return _abilities; } }
+    public string CustomName { get { return _customName; } set { _customName = value; } }
 
     private CharacterDefinitionSO _characterDefinition;
     private int _initiativeRoll;
     private int _initiativeBonus;
     private string _name;
     private List<AbilityDefinitionSO> _abilities;
+    private string _customName;
 
     [SerializeField]
     private SpriteRenderer _characterVisuals;
@@ -40,7 +43,9 @@ public class Character : MonoBehaviour
     public void InitCharacter(CharacterDefinitionSO charDef)
     {
         _characterDefinition = charDef;
-        _name = _characterDefinition.Name;
+        // if definition has flag, set name custom name
+        if (_characterDefinition.IsCustomName) _name = _customName != null ? _customName : _characterDefinition.Name;
+        else _name = _characterDefinition.Name;
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
         _initiativeBonus = _characterDefinition.IntBonus;
         _abilities = _characterDefinition.Abilities; // populate the list with abilities from the SO

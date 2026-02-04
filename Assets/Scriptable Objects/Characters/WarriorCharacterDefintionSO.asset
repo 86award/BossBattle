@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87335cacfe2e2a45bfcd5a68c70dad0, type: 3}
   m_Name: WarriorCharacterDefintionSO
   m_EditorClassIdentifier: Assembly-CSharp::CharacterDefinitionSO
+  _isCustomName: 1
   _name: Hero
   _maxHealth: 100
   _spriteIdle: {fileID: 4723107735738678597, guid: 6f4163b2c180a3348a342da7f6367844, type: 3}

@@ -9,6 +9,11 @@ public class CharacterDefinitionSO : ScriptableObject
     public Sprite SpriteIdle { get { return _spriteIdle; } }
     public int IntBonus { get { return _initiativeRollBonus; } }
     public List<AbilityDefinitionSO> Abilities { get { return _abilities; } }
+    public bool IsCustomName { get { return _isCustomName; } }
+    
+
+    [SerializeField]
+    private bool _isCustomName;
 
     [SerializeField]
     private string _name;

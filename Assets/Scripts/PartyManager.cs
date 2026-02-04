@@ -37,6 +37,9 @@ public class PartyManager : MonoBehaviour
             if (i >= _partyDefinition.Characters.Count) break;
             GameObject characterObject = Instantiate(characterPrefab, _spawnLocation[i]);
             Character characterScript = characterObject.GetComponent<Character>();
+            // I could ask for a custom name here and assign it to the instance's custom name field
+            string cName = "True Programmer";
+            characterScript.CustomName = cName;
             characterScript.InitCharacter(character);
             _characters.Add(characterScript);
             /*
