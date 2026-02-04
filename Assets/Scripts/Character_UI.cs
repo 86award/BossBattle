@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Character_UI : MonoBehaviour
 {
@@ -52,8 +53,8 @@ public class Character_UI : MonoBehaviour
             _actionToolbarButtons.Add(actionButton);
             CharacterActionResponse actionResponse = actionButton.GetComponent<CharacterActionResponse>();
             actionResponse.InitializeAbility(ability);
-            actionResponse.ActionButtonClicked += ActionButtonClicked;
-            actionResponse.ActionButtonClicked += _character.ActionSelectedFromUI;
+            actionResponse.OnActionButtonClicked += ActionButtonHandler;
+            actionResponse.OnActionButtonClicked += _character.AbilitySelectedHandler;
         }
         foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
     }
@@ -68,7 +69,7 @@ public class Character_UI : MonoBehaviour
         foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(true); // must remember to get the gameObject, not just button component
     }
 
-    private void ActionButtonClicked(AbilityDefinitionSO _)
+    private void ActionButtonHandler(AbilityDefinitionSO ability)
     {
         foreach (Button button in _actionToolbarButtons) button.gameObject.SetActive(false);
     }

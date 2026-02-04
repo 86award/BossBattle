@@ -44,13 +44,13 @@ public class Character : MonoBehaviour
         _characterVisuals.sprite = _characterDefinition.SpriteIdle;
         _initiativeBonus = _characterDefinition.IntBonus;
         _abilities = _characterDefinition.Abilities; // populate the list with abilities from the SO
-        UpdateNamePlate.Invoke();
-        PopulateAbilityUI.Invoke();
+        UpdateNamePlate?.Invoke();
+        PopulateAbilityUI?.Invoke();
     }
 
     public void ActivateCharacter()
     {
-        CharacterActivated.Invoke();
+        CharacterActivated?.Invoke();
     }
 
     public void RollInitiative(int randomRoll)
@@ -60,7 +60,7 @@ public class Character : MonoBehaviour
 
     public event Action<AbilityDefinitionSO> ActionSelected;
 
-    public void ActionSelectedFromUI(AbilityDefinitionSO abilityDefinitionSO)
+    public void AbilitySelectedHandler(AbilityDefinitionSO abilityDefinitionSO)
     {
         ActionSelected?.Invoke(abilityDefinitionSO);
     }

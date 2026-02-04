@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CharacterActionResponse : MonoBehaviour
 {
-    public event Action<AbilityDefinitionSO> ActionButtonClicked;
+    public event Action<AbilityDefinitionSO> OnActionButtonClicked;
 
     public AbilityDefinitionSO AbilityData { get; private set; }
 
@@ -16,12 +16,12 @@ public class CharacterActionResponse : MonoBehaviour
     private void Start()
     {
         Button button = GetComponent<Button>();
-        button.onClick.AddListener(OnButtonClicked);
+        button.onClick.AddListener(ButtonClickedHandler);
     }
 
-    private void OnButtonClicked()
+    private void ButtonClickedHandler()
     {
         Debug.Log("ActionResponse class activated.");
-        ActionButtonClicked?.Invoke(AbilityData);
+        OnActionButtonClicked?.Invoke(AbilityData);
     }
 }
