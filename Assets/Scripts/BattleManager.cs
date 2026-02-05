@@ -33,8 +33,6 @@ public class BattleManager : MonoBehaviour
     private System.Random _random = new System.Random();
     private int _battleRound;
 
-    public string _customName;
-
     private void Awake()
     {
         /*
@@ -50,6 +48,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (Character character in _heroPartyManager.GetPartyCharacterList()) _battleRoster.Add(character);
         foreach (Character character in _monsterPartyManager.GetPartyCharacterList()) _battleRoster.Add(character);
+
     }
 
     private void Start()
@@ -60,7 +59,7 @@ public class BattleManager : MonoBehaviour
 
     private void InitialiseBattleRound()
     {
-        _battleUI._roundText.text = $"Battle Round {_battleRound}";
+        _battleUI.RoundText.text = $"Battle Round {_battleRound}";
         BuildCharacterTurnOrder();
         TurnSelection();
         //WaitingForAction();
@@ -99,7 +98,7 @@ public class BattleManager : MonoBehaviour
         // need to check is character has a custom name or not and provide it if there is one
         string nextCharacterName = nextCharacter.CharacterDefinitionSO.IsCustomName ? nextCharacter.CustomName : nextCharacter.Name;
 
-        _battleUI._turnText.text = $"It's {nextCharacterName}'s turn.";
+        _battleUI.TurnText.text = $"It's {nextCharacterName}'s turn.";
         nextCharacter.ActivateCharacter(); // event will be fired for each character
     }
 

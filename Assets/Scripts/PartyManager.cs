@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PartyManager : MonoBehaviour
 {
-    /*
-     * Owns party composition and party-wide state
-     * Knows which characters are alive or ready
-    */
+/*
+* Owns party composition and party-wide state
+* Knows which characters are alive or ready
+*/
     public GameObject characterPrefab;
 
     [SerializeField]
@@ -17,7 +17,7 @@ public class PartyManager : MonoBehaviour
 
     [Header("Party Members")]
     [SerializeField]
-    private List<Character> _characters; // changed from List<Character>
+    private List<Character> _characters;
 
     public void SetPartyDefinition(PartyDefinitionSO partyDefinitionSO)
     {
@@ -37,9 +37,9 @@ public class PartyManager : MonoBehaviour
             if (i >= _partyDefinition.Characters.Count) break;
             GameObject characterObject = Instantiate(characterPrefab, _spawnLocation[i]);
             Character characterScript = characterObject.GetComponent<Character>();
-            // I could ask for a custom name here and assign it to the instance's custom name field
-            string cName = "True Programmer";
-            characterScript.CustomName = cName;
+            
+            // getting the name from the static player character setup object
+            if (character.IsCustomName) characterScript.CustomName = PlayerCharacterSetup.Name;
             characterScript.InitCharacter(character);
             _characters.Add(characterScript);
             /*

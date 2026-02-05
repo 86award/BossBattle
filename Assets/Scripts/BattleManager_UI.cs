@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class BattleManager_UI : MonoBehaviour
 {
-    [SerializeField]
-    public TextMeshProUGUI _turnText;
+    public TextMeshProUGUI TurnText { get { return _turnText; } }
+    public TextMeshProUGUI RoundText { get { return _roundText; } }
 
     [SerializeField]
-    public TextMeshProUGUI _roundText;
+    private TextMeshProUGUI _turnText;
+
+    [SerializeField]
+    private TextMeshProUGUI _roundText;
 }
