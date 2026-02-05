@@ -14,7 +14,7 @@ The final game will be able to be played with 1 player (vs. CPU) or 2 players.
 ### Objectives
 + Allow player to enter a custom name for their character
 ### State of the project at the end of this challenge:
-+ <img width="887" height="589" alt="image" src="https://github.com/user-attachments/assets/ee555e58-aed6-4468-93bc-70486e47d29c" />
+<img width="887" height="589" alt="image" src="https://github.com/user-attachments/assets/ee555e58-aed6-4468-93bc-70486e47d29c" />
 
 
 ## Challenge #1: Building Character
