@@ -1,17 +1,16 @@
 using UnityEngine;
 using TMPro;
-using System;
-using Unity;
 using UnityEngine.SceneManagement;
 
 
 public class PlayerCharacterSetup : MonoBehaviour
 {
-    [SerializeField] private TMP_InputField _inputField;
+    [SerializeField]
+    private TMP_InputField _inputField;
 
     public static PlayerCharacterSetup Instance;
 
-    public static string Name;
+    public static string PlayerCharacterName;
 
     private void Awake()
     {
@@ -29,15 +28,13 @@ public class PlayerCharacterSetup : MonoBehaviour
     {
         if (_inputField.text.Trim() != "")
         {
-            Debug.Log("Saving name.");
-            Name = _inputField.text;
+            PlayerCharacterName = _inputField.text;
             SceneManager.LoadScene(1);
         }
     }
 
     public void ClearButton()
     {
-        Debug.Log("Clearing");
         _inputField.text = "";
     }
 }

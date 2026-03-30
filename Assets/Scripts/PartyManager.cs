@@ -39,7 +39,7 @@ public class PartyManager : MonoBehaviour
             Character characterScript = characterObject.GetComponent<Character>();
             
             // getting the name from the static player character setup object
-            if (character.IsCustomName) characterScript.CustomName = PlayerCharacterSetup.Name;
+            if (character.IsCustomName) characterScript.CustomName = PlayerCharacterSetup.PlayerCharacterName;
             characterScript.InitCharacter(character);
             _characters.Add(characterScript);
             /*

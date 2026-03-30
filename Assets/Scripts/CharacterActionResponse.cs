@@ -21,7 +21,7 @@ public class CharacterActionResponse : MonoBehaviour
 
     private void ButtonClickedHandler()
     {
-        Debug.Log("ActionResponse class activated.");
+        Debug.Log("CharacterActionResponse script activated.");
         OnActionButtonClicked?.Invoke(AbilityData);
     }
 }
