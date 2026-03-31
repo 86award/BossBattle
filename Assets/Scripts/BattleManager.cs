@@ -99,7 +99,20 @@ public class BattleManager : MonoBehaviour
         string nextCharacterName = nextCharacter.CharacterDefinitionSO.IsCustomName ? nextCharacter.CustomName : nextCharacter.Name;
 
         _battleUI.TurnText.text = $"It's {nextCharacterName}'s turn.";
-        nextCharacter.ActivateCharacter(); // event will be fired for each character
+
+        /*
+         * I think this is where I want to split the code path
+         * If the next character is a monster, have AI take over and choose the right move
+         */
+
+        if (nextCharacter.CharacterDefinitionSO.CharacterType == CharacterType.Hero)
+        {
+            nextCharacter.ActivateCharacter(); // event will be fired for each character
+        }
+        else
+        {
+            // code path for the AI making its turn
+        }
     }
 
     private void WaitingForAction(AbilityDefinitionSO ability)

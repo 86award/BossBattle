@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+public enum CharacterType { Hero, Monster }
 
 [CreateAssetMenu(fileName = "CharacterDefintionSO", menuName = "Scriptable Objects/Character Definition", order = 3)]
 public class CharacterDefinitionSO : ScriptableObject
@@ -10,7 +11,10 @@ public class CharacterDefinitionSO : ScriptableObject
     public int IntBonus { get { return _initiativeRollBonus; } }
     public List<AbilityDefinitionSO> Abilities { get { return _abilities; } }
     public bool IsCustomName { get { return _isCustomName; } }
-    
+    public CharacterType CharacterType { get { return _characterType; } }
+
+    [SerializeField]
+    private CharacterType _characterType;
 
     [SerializeField]
     private bool _isCustomName;
